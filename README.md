@@ -2,7 +2,7 @@
 
 ![AURA E-Commerce Screenshot](./public/screenshot.png)
 
-**Live Demo:** [https://YOUR_LIVE_DEMO_URL_HERE.com](https://YOUR_LIVE_DEMO_URL_HERE.com)
+**Live Demo:** https://aura-ecommerce-project.vercel.app/
 
 ---
 
