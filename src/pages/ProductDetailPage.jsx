@@ -1,13 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchProductById } from '../app/productsSlice';
 import { addToCart } from '../app/cartSlice';
+import { addToWishlist, removeFromWishlist } from '../app/authSlice'; // Import wishlist actions
 import Loader from '../components/Loader';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faStar as faStarSolid } from '@fortawesome/free-solid-svg-icons';
-import { faStar as faStarRegular } from '@fortawesome/free-regular-svg-icons';
+import { faStar as faStarSolid, faHeart as faHeartSolid } from '@fortawesome/free-solid-svg-icons';
+import { faStar as faStarRegular, faHeart as faHeartRegular } from '@fortawesome/free-regular-svg-icons';
 
+// Helper component for rendering star ratings
 const StarRating = ({ rating }) => {
   const totalStars = 5;
   const fullStars = Math.floor(rating);
@@ -23,11 +25,20 @@ const StarRating = ({ rating }) => {
 const ProductDetailPage = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
+  
+  // Get all necessary state from Redux
   const { selectedProduct: product, status } = useSelector((state) => state.products);
+  const { wishlist, isAuthenticated } = useSelector((state) => state.auth);
 
+  // Local state for the page
   const [selectedImage, setSelectedImage] = useState('');
   const [quantity, setQuantity] = useState(1);
   const [activeTab, setActiveTab] = useState('description');
+
+  // Check if the current product is in the wishlist
+  const isWishlisted = useMemo(() => {
+    return product ? wishlist.some((item) => item.id === product.id) : false;
+  }, [product, wishlist]);
 
   useEffect(() => {
     dispatch(fetchProductById(id));
@@ -51,24 +62,41 @@ const ProductDetailPage = () => {
     }
   };
 
+  const handleWishlistToggle = () => {
+    if (!isAuthenticated) {
+      alert('Please log in to use the wishlist feature.');
+      return;
+    }
+    if (product) {
+      if (isWishlisted) {
+        dispatch(removeFromWishlist(product.id));
+      } else {
+        dispatch(addToWishlist(product));
+      }
+    }
+  };
+
   if (status === 'loading' || !product) return <Loader />;
   if (status === 'failed') return <p className="text-center text-red-500">Failed to load product details.</p>;
 
   return (
     <div className="container max-w-6xl mx-auto px-5 py-16">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+        {/* Image Gallery */}
         <div>
-          <div className="border border-border p-2 mb-4">
+          <div className="border border-border p-2 mb-4 rounded-2xl">
             <img src={selectedImage} alt={product.title} className="w-full h-auto aspect-square object-contain" />
           </div>
           <div className="grid grid-cols-5 gap-2">
             {product.images.map((img, index) => (
-              <div key={index} className={`border-2 p-1 cursor-pointer transition-all ${selectedImage === img ? 'border-accent' : 'border-border hover:border-muted'}`} onClick={() => setSelectedImage(img)}>
-                <img src={img} alt={`${product.title} view ${index + 1}`} className="w-full h-24 object-cover" />
+              <div key={index} className={`border-2 p-1 cursor-pointer transition-all rounded-lg ${selectedImage === img ? 'border-accent' : 'border-border hover:border-muted'}`} onClick={() => setSelectedImage(img)}>
+                <img src={img} alt={`${product.title} view ${index + 1}`} className="w-full h-24 object-cover rounded-md" />
               </div>
             ))}
           </div>
         </div>
+
+        {/* Product Info */}
         <div>
           <Link to={`/shop?category=${product.category}`} className="text-sm uppercase tracking-wider text-accent font-semibold hover:underline">{product.category}</Link>
           <h1 className="text-4xl font-bold text-text my-2">{product.title}</h1>
@@ -83,14 +111,30 @@ const ProductDetailPage = () => {
             <p className={product.availabilityStatus === 'In Stock' ? 'text-green-400' : 'text-yellow-400'}><strong>Availability:</strong> {product.availabilityStatus} ({product.stock} left)</p>
             <p className="text-muted"><strong>SKU:</strong> {product.sku}</p>
           </div>
+          
+          {/* --- ACTION BUTTONS SECTION --- */}
           <div className="flex items-center gap-4 mb-6">
-            <div className="flex items-center border border-border">
-              <button onClick={() => handleQuantityChange(-1)} className="px-4 py-2 text-lg hover:bg-surface">-</button>
-              <input type="text" value={quantity} readOnly className="w-12 text-center bg-transparent py-2" />
-              <button onClick={() => handleQuantityChange(1)} className="px-4 py-2 text-lg hover:bg-surface">+</button>
+            <div className="flex items-center border border-border rounded-lg">
+              <button onClick={() => handleQuantityChange(-1)} className="px-4 py-3 text-lg hover:bg-surface rounded-l-lg">-</button>
+              <input type="text" value={quantity} readOnly className="w-12 text-center bg-transparent py-3" />
+              <button onClick={() => handleQuantityChange(1)} className="px-4 py-3 text-lg hover:bg-surface rounded-r-lg">+</button>
             </div>
-            <button onClick={handleAddToCart} className="flex-grow bg-accent text-bg font-bold uppercase tracking-wider py-3 transition-opacity hover:bg-opacity-80">Add to Cart</button>
+            <button onClick={handleAddToCart} className="flex-grow bg-accent text-bg font-bold uppercase tracking-wider py-3.5 rounded-lg transition-opacity hover:bg-opacity-80">Add to Cart</button>
+            
+            {/* New Wishlist Button */}
+            <button
+              onClick={handleWishlistToggle}
+              title={isWishlisted ? "Remove from Wishlist" : "Add to Wishlist"}
+              className="border border-border rounded-lg p-3 text-muted hover:border-accent hover:text-accent transition-colors"
+            >
+              <FontAwesomeIcon
+                icon={isWishlisted ? faHeartSolid : faHeartRegular}
+                className={`text-xl ${isWishlisted ? 'text-red-500' : ''}`}
+              />
+            </button>
           </div>
+          {/* --- END OF ACTION BUTTONS SECTION --- */}
+
         </div>
       </div>
       <div className="mt-20">

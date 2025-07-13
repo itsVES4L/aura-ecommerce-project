@@ -2,6 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Default theme (Dark Mode) */
 :root {
   --bg-color: #121212;
   --primary-surface-color: #1E1E1E;
@@ -11,11 +12,26 @@
   --border-color: #333333;
 }
 
+/* --- THIS IS THE UPDATED SECTION --- */
+/* New "Sky Blue & White" Light Mode Theme */
+.light {
+  --bg-color: #f8fafc; /* A very light, cool gray (Slate 50) */
+  --primary-surface-color: #ffffff; /* Pure white for content panels */
+  --accent-color: #0ea5e9; /* A vibrant sky blue (Sky 500) */
+  --text-color: #1e293b; /* A deep, readable slate gray (Slate 800) */
+  --text-muted-color: #64748b; /* A softer slate gray (Slate 500) */
+  --border-color: #e2e8f0; /* A light, subtle border color (Slate 200) */
+}
+/* --- END OF UPDATED SECTION --- */
+
 body {
   background-color: var(--bg-color);
   color: var(--text-color);
   font-family: 'Poppins', sans-serif;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
+
+/* Custom utility to hide the scrollbar */
 .hide-scrollbar::-webkit-scrollbar {
   display: none;
 }

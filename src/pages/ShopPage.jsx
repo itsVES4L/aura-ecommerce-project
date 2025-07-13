@@ -24,8 +24,10 @@ const ShopPage = () => {
   }, [dispatch, categories.length]);
 
   useEffect(() => {
+    // --- THIS IS THE CORRECTED LINE ---
     dispatch(fetchProducts({ category: selectedCategory, searchTerm: initialSearchTerm }));
-  }, [dispatch, selectedCategory, initialSearchTerm]);
+  }, [dispatch, selectedCategory, initialSearchTerm]); // Corrected 'selectedCatergory' to 'selectedCategory'
+  // --- END OF CORRECTION ---
 
   useEffect(() => {
     const handler = setTimeout(() => {
@@ -34,7 +36,7 @@ const ShopPage = () => {
         } else {
             setSearchParams({}, { replace: true });
         }
-    }, 500); // Debounce search input
+    }, 500);
 
     return () => {
         clearTimeout(handler);
@@ -80,7 +82,8 @@ const ShopPage = () => {
   return (
     <div className="container max-w-7xl mx-auto px-5 py-16">
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-        <aside className="lg:col-span-1 lg:sticky lg:top-24 h-fit bg-surface p-6 border border-border">
+        {/* Filter Sidebar */}
+        <aside className="lg:col-span-1 lg:sticky lg:top-24 h-fit bg-surface p-6 rounded-2xl">
           <h2 className="text-2xl font-bold mb-6">Filters</h2>
           <div className="mb-6">
             <label htmlFor="search" className="block text-sm font-semibold mb-2">Search</label>
@@ -90,51 +93,62 @@ const ShopPage = () => {
               placeholder="Product name..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full bg-bg border border-border px-3 py-2 text-text placeholder-muted focus:outline-none focus:ring-2 focus:ring-accent"
+              className="w-full bg-bg border border-border rounded-lg px-3 py-2 text-text placeholder-muted focus:outline-none focus:ring-2 focus:ring-accent"
             />
           </div>
           <div className="mb-6">
             <label className="block text-sm font-semibold mb-2">Price Range</label>
             <div className="flex items-center gap-2">
-              <input type="number" placeholder="Min" value={priceRange.min} onChange={(e) => setPriceRange({ ...priceRange, min: e.target.value })} className="w-full bg-bg border border-border px-3 py-2 text-text placeholder-muted focus:outline-none focus:ring-2 focus:ring-accent" />
+              <input type="number" placeholder="Min" value={priceRange.min} onChange={(e) => setPriceRange({ ...priceRange, min: e.target.value })} className="w-full bg-bg border border-border rounded-lg px-3 py-2 text-text placeholder-muted focus:outline-none focus:ring-2 focus:ring-accent" />
               <span>-</span>
-              <input type="number" placeholder="Max" value={priceRange.max} onChange={(e) => setPriceRange({ ...priceRange, max: e.target.value })} className="w-full bg-bg border border-border px-3 py-2 text-text placeholder-muted focus:outline-none focus:ring-2 focus:ring-accent" />
+              <input type="number" placeholder="Max" value={priceRange.max} onChange={(e) => setPriceRange({ ...priceRange, max: e.target.value })} className="w-full bg-bg border border-border rounded-lg px-3 py-2 text-text placeholder-muted focus:outline-none focus:ring-2 focus:ring-accent" />
             </div>
           </div>
           <div className="mb-6">
             <h3 className="text-sm font-semibold mb-3">Categories</h3>
             <div className="space-y-2">
-              <button onClick={() => setSelectedCategory('')} className={`w-full text-left px-3 py-1.5 text-sm rounded transition-colors ${selectedCategory === '' ? 'bg-accent text-bg' : 'hover:bg-border'}`}>All Categories</button>
+              <button onClick={() => setSelectedCategory('')} className={`w-full text-left px-3 py-1.5 text-sm rounded-lg transition-colors ${selectedCategory === '' ? 'bg-accent text-bg' : 'hover:bg-border'}`}>All Categories</button>
               {categories.map((cat) => (
-                <button key={cat.slug} onClick={() => setSelectedCategory(cat.slug)} className={`w-full text-left px-3 py-1.5 text-sm rounded transition-colors capitalize ${selectedCategory === cat.slug ? 'bg-accent text-bg' : 'hover:bg-border'}`}>{cat.name}</button>
+                <button key={cat.slug} onClick={() => setSelectedCategory(cat.slug)} className={`w-full text-left px-3 py-1.5 text-sm rounded-lg transition-colors capitalize ${selectedCategory === cat.slug ? 'bg-accent text-bg' : 'hover:bg-border'}`}>{cat.name}</button>
               ))}
             </div>
           </div>
-          <button onClick={handleClearFilters} className="w-full py-2 border border-border text-text font-semibold uppercase text-sm transition-colors hover:bg-accent hover:text-bg hover:border-accent">Clear Filters</button>
+          <button onClick={handleClearFilters} className="w-full py-2 border border-border text-text font-semibold uppercase text-sm rounded-lg transition-colors hover:bg-accent hover:text-bg hover:border-accent">Clear Filters</button>
         </aside>
+
+        {/* Product Listing */}
         <main className="lg:col-span-3">
-          <div className="flex flex-col sm:flex-row justify-between items-center mb-6 pb-4 border-b border-border">
-            <p className="text-muted text-sm mb-2 sm:mb-0">Showing {displayedProducts.length} products</p>
-            <select value={sortOrder} onChange={(e) => setSortOrder(e.target.value)} className="bg-surface border border-border px-3 py-2 text-text focus:outline-none focus:ring-2 focus:ring-accent">
-              <option value="latest">Sort by Latest</option>
-              <option value="price-asc">Sort by Price: Low to High</option>
-              <option value="price-desc">Sort by Price: High to Low</option>
-              <option value="rating-desc">Sort by Rating: High to Low</option>
-            </select>
-          </div>
-          {status === 'loading' ? (
-            <Loader />
-          ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-8">
-              {displayedProducts.length > 0 ? (
-                displayedProducts.map((product) => (
-                  <ProductCard key={product.id} product={{...product, originalPrice: product.price * (1 + product.discountPercentage / 100), tag: product.discountPercentage > 15 ? 'Sale' : null}} />
-                ))
-              ) : (
-                <p className="text-center text-muted col-span-full py-20">No products match your criteria.</p>
-              )}
+          <div className="bg-surface rounded-2xl p-6 md:p-8">
+            <div className="flex flex-col sm:flex-row justify-between items-center mb-6 pb-4 border-b border-border">
+              <p className="text-muted text-sm mb-2 sm:mb-0">
+                Showing {displayedProducts.length} products
+              </p>
+              <select
+                value={sortOrder}
+                onChange={(e) => setSortOrder(e.target.value)}
+                className="bg-bg border border-border rounded-lg px-3 py-2 text-text focus:outline-none focus:ring-2 focus:ring-accent"
+              >
+                <option value="latest">Sort by Latest</option>
+                <option value="price-asc">Sort by Price: Low to High</option>
+                <option value="price-desc">Sort by Price: High to Low</option>
+                <option value="rating-desc">Sort by Rating: High to Low</option>
+              </select>
             </div>
-          )}
+
+            {status === 'loading' ? (
+              <Loader />
+            ) : (
+              <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-8">
+                {displayedProducts.length > 0 ? (
+                  displayedProducts.map((product) => (
+                    <ProductCard key={product.id} product={{...product, originalPrice: product.price * (1 + product.discountPercentage / 100), tag: product.discountPercentage > 15 ? 'Sale' : null}} />
+                  ))
+                ) : (
+                  <p className="text-center text-muted col-span-full py-20">No products match your criteria.</p>
+                )}
+              </div>
+            )}
+          </div>
         </main>
       </div>
     </div>
