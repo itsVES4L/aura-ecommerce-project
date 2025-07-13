@@ -30,7 +30,7 @@ const Footer = () => {
     <footer className="py-16">
       <div className="container max-w-7xl mx-auto px-5">
        
-       }
+       
         <div className="bg-surface rounded-2xl p-8 md:p-12">
           {/* Top section with links and newsletter */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
