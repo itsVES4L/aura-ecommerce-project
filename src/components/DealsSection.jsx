@@ -31,7 +31,7 @@ const DealsSection = ({ products }) => {
   const seconds = formatTime(Math.floor((timeLeft / 1000) % 60));
 
   return (
-    // --- THIS IS THE UPDATED SECTION CONTAINER ---
+ 
     <section className="bg-surface rounded-2xl my-16 p-6 sm:p-8 border border-border">
       <div className="container max-w-7xl mx-auto">
         {/* Section Header */}

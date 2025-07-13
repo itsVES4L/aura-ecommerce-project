@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch, faShoppingBag, faBars, faTimes } from '@fortawesome/free-solid-svg-icons';
 
-// Add "About" and "Contact" to the navigation links
+
 const navLinks = [
     { name: 'Home', href: '/' },
     { name: 'Shop', href: '/shop' },

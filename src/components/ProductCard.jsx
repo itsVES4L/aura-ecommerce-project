@@ -14,7 +14,7 @@ const ProductCard = ({ product }) => {
   };
 
   return (
-    // The main container with new rounded corners and hover effects
+   
     <div className="bg-surface rounded-2xl flex flex-col overflow-hidden border border-transparent transition-all duration-300 hover:border-accent hover:shadow-lg hover:shadow-accent/5">
       <Link to={`/product/${product.id}`} className="block group">
         {/* Image Container */}
@@ -33,7 +33,7 @@ const ProductCard = ({ product }) => {
           )}
         </div>
 
-        {/* Info Container with more padding */}
+      
         <div className="p-6 flex flex-col flex-grow">
           <h3 className="text-lg font-semibold text-text mb-1 truncate" title={product.title}>
             {product.title}
@@ -48,7 +48,7 @@ const ProductCard = ({ product }) => {
             ${product.price.toFixed(2)}
           </p>
 
-          {/* The button is now always visible and part of the normal layout flow */}
+   
           <button
             onClick={handleAddToCart}
             className="w-full mt-auto bg-border text-muted rounded-lg py-2.5 px-4 text-sm font-semibold uppercase tracking-wider transition-colors duration-300 hover:bg-accent hover:text-bg"

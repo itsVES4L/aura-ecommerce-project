@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { fetchProducts } from '../app/productsSlice';
 import ProductCard from '../components/ProductCard';
 import Loader from '../components/Loader';
-import DealsSection from '../components/DealsSection'; // 1. Import the new component
+import DealsSection from '../components/DealsSection'; 
 import { Link } from 'react-router-dom';
 
 const HomePage = () => {
