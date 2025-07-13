@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 const RegisterPage = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
-    // In a real app, you would handle registration logic here
+ 
     alert('Registration functionality is for demonstration purposes.');
   };
 

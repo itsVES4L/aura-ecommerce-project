@@ -36,7 +36,7 @@ const ProductCard = ({ product }) => {
   };
 
   return (
-    // 1. Changed bg-surface to bg-bg for better contrast
+    
     <div className="bg-bg rounded-2xl flex flex-col overflow-hidden border border-transparent transition-all duration-300 hover:border-accent hover:shadow-lg hover:shadow-accent/5">
       <Link to={`/product/${product.id}`} className="block group">
         {/* Image Container */}
@@ -53,7 +53,7 @@ const ProductCard = ({ product }) => {
               {product.tag}
             </span>
           )}
-          {/* 2. Updated Wishlist Button */}
+        
           <button
             onClick={handleWishlistToggle}
             title={isWishlisted ? "Remove from Wishlist" : "Add to Wishlist"}

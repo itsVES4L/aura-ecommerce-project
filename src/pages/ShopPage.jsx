@@ -8,7 +8,7 @@ import Loader from '../components/Loader';
 const ShopPage = () => {
   const dispatch = useDispatch();
   const { items: allProducts, categories, status } = useSelector((state) => state.products);
-  
+
   const [searchParams, setSearchParams] = useSearchParams();
   const initialSearchTerm = searchParams.get('q') || '';
 
@@ -24,22 +24,20 @@ const ShopPage = () => {
   }, [dispatch, categories.length]);
 
   useEffect(() => {
-    // --- THIS IS THE CORRECTED LINE ---
-    dispatch(fetchProducts({ category: selectedCategory, searchTerm: initialSearchTerm }));
-  }, [dispatch, selectedCategory, initialSearchTerm]); // Corrected 'selectedCatergory' to 'selectedCategory'
-  // --- END OF CORRECTION ---
 
+    dispatch(fetchProducts({ category: selectedCategory, searchTerm: initialSearchTerm }));
+  }, [dispatch, selectedCategory, initialSearchTerm]);
   useEffect(() => {
     const handler = setTimeout(() => {
-        if (searchTerm) {
-            setSearchParams({ q: searchTerm }, { replace: true });
-        } else {
-            setSearchParams({}, { replace: true });
-        }
+      if (searchTerm) {
+        setSearchParams({ q: searchTerm }, { replace: true });
+      } else {
+        setSearchParams({}, { replace: true });
+      }
     }, 500);
 
     return () => {
-        clearTimeout(handler);
+      clearTimeout(handler);
     };
   }, [searchTerm, setSearchParams]);
 
@@ -141,7 +139,7 @@ const ShopPage = () => {
               <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-8">
                 {displayedProducts.length > 0 ? (
                   displayedProducts.map((product) => (
-                    <ProductCard key={product.id} product={{...product, originalPrice: product.price * (1 + product.discountPercentage / 100), tag: product.discountPercentage > 15 ? 'Sale' : null}} />
+                    <ProductCard key={product.id} product={{ ...product, originalPrice: product.price * (1 + product.discountPercentage / 100), tag: product.discountPercentage > 15 ? 'Sale' : null }} />
                   ))
                 ) : (
                   <p className="text-center text-muted col-span-full py-20">No products match your criteria.</p>

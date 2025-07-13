@@ -13,8 +13,7 @@ const LoginPage = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // In a real app, you would verify credentials against an API
-    // For this demo, we'll use mock user data
+ 
     const mockUser = {
       id: 1,
       name: 'John Doe',

@@ -21,7 +21,7 @@ const AccountPage = () => {
   };
 
   if (!user) {
-    // This should ideally not be reached due to ProtectedRoute, but it's a good fallback
+
     return <p>Loading user data...</p>;
   }
 

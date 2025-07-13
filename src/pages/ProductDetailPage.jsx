@@ -112,7 +112,7 @@ const ProductDetailPage = () => {
             <p className="text-muted"><strong>SKU:</strong> {product.sku}</p>
           </div>
           
-          {/* --- ACTION BUTTONS SECTION --- */}
+    
           <div className="flex items-center gap-4 mb-6">
             <div className="flex items-center border border-border rounded-lg">
               <button onClick={() => handleQuantityChange(-1)} className="px-4 py-3 text-lg hover:bg-surface rounded-l-lg">-</button>
@@ -121,7 +121,7 @@ const ProductDetailPage = () => {
             </div>
             <button onClick={handleAddToCart} className="flex-grow bg-accent text-bg font-bold uppercase tracking-wider py-3.5 rounded-lg transition-opacity hover:bg-opacity-80">Add to Cart</button>
             
-            {/* New Wishlist Button */}
+          
             <button
               onClick={handleWishlistToggle}
               title={isWishlisted ? "Remove from Wishlist" : "Add to Wishlist"}
@@ -133,7 +133,7 @@ const ProductDetailPage = () => {
               />
             </button>
           </div>
-          {/* --- END OF ACTION BUTTONS SECTION --- */}
+     
 
         </div>
       </div>

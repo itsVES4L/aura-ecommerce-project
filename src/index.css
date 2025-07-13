@@ -13,10 +13,14 @@
 }
 
 /* --- THIS IS THE UPDATED SECTION --- */
-/* New "Sky Blue & White" Light Mode Theme */
+/* New "Sky Blue & White" Light Mode Theme with proper contrast */
 .light {
-  --bg-color: #f8fafc; /* A very light, cool gray (Slate 50) */
-  --primary-surface-color: #ffffff; /* Pure white for content panels */
+  /* The main background is now pure white */
+  --bg-color: #ffffff; 
+
+  /* The content panels are now a very light gray, making them stand out */
+  --primary-surface-color: #dcd8d8; /* Slate 50 */
+
   --accent-color: #0ea5e9; /* A vibrant sky blue (Sky 500) */
   --text-color: #1e293b; /* A deep, readable slate gray (Slate 800) */
   --text-muted-color: #64748b; /* A softer slate gray (Slate 500) */
